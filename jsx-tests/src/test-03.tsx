@@ -128,11 +128,6 @@ function InformationTable(props) {
         </tr>
       </thead>
       <tbody>
-        {/* <tr>
-          <td style={style.tableCell}>Coder</td>
-          <td style={style.tableCell}>Byte</td>
-          <td style={style.tableCell}>8885559999</td>
-        </tr> */}
         {props.phoneBook.map((entry) => {
           return (
             <tr>
