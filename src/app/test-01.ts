@@ -7,6 +7,7 @@
 
 import { Component, Input, NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: "ng-app",
@@ -14,16 +15,55 @@ import { RouterModule } from "@angular/router";
     <h2>Loan Details</h2>
     <b>Monthly Payment:</b> {{ monthly_payment }} <br />
     <b>Late Payment Fee : {{ late_payment }}</b> <br />
+    <b>Loan Amount: </b
+    ><input
+      type="number"
+      class="input-text-holder"
+      value="{{ loan_amount }}"
+      (input)="handleInputChange($event)"
+    />
+    <br />
   </div>`,
 })
 export class Test01Component {
   loan_amount: number = 1000;
-  monthly_payment: number = 200;
-  late_payment = 10;
+  monthly_payment: string | number = `$200`;
+  late_payment: string | number = `$10`;
+
+  getPercentageNumber(
+    percentageInHundred: number,
+    percentageInTen: number,
+    fullNumber: number
+  ): number {
+    return (percentageInTen / percentageInHundred) * fullNumber;
+  }
+
+  handleInputChange(e): void {
+    const value: number = Number(e.target.value);
+
+    this.loan_amount = value;
+
+    if (!value || value <= 0) {
+      this.monthly_payment = "N/A";
+      this.late_payment = "N/A";
+    } else {
+      this.monthly_payment = `$${this.getPercentageNumber(
+        100,
+        2,
+        this.loan_amount
+      )}`;
+      this.late_payment = `$${this.getPercentageNumber(
+        100,
+        5,
+        this.loan_amount
+      )}`;
+    }
+  }
 }
 
 @NgModule({
   imports: [
+    FormsModule,
     RouterModule.forChild([
       {
         path: "",
